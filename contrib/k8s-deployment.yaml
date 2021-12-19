@@ -16,47 +16,6 @@
 # follow the link given:
 #
 # - kubectl -n FOO exec -ti $( kubectl -n FOO get pods | awk '$3=="Running" {print $1; exit}' ) -- withings-sync
-
-
----
-# Secret for credentials.  By defining this as stringData:
-# instead of data: we can enter details here in plain text and
-# it gets base64 encoded when added to the system.
-#
-# Leave unused variables defined, but empty ""
-#
-apiVersion: v1
-kind: Secret
-metadata:
-  name: credentials
-type: Opaque
-stringData:
-  # NOT base64 
-  GARMIN_PASSWORD: "someone@example.com"
-  GARMIN_USERNAME: "password-goes-here"
-  TRAINERROAD_PASSWORD: ""
-  TRAINERROAD_USERNAME: ""
-
----
-# PVC for storing Withings OAuth tokens.  Different
-# storage methods have different minimum sizes.
-#
-# If you don't have a default storage class, you must
-# specify it
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: withings-oauth-cache
-spec:
-  accessModes:
-  - ReadWriteOnce
-  # uncomment, and define if needed
-  # storageClassName: class
-  resources:
-    requests:
-      storage: 1Mi
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
